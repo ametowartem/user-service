@@ -8,17 +8,17 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { AuthService } from '../service/auth.service';
 import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
-import { SingInResponseDto } from './dto/sign-in.response.dto';
-import { SingInRequestDto } from './dto/sign-in.request.dto';
-import { UserPayloadDto } from './dto/user-payload.dto';
-import { AuthGuard } from './auth.guard';
-import { PermissionHandler } from '../permission/permission.decorator';
-import { UserPermission } from '../permission/permission.enum';
+import { SingInResponseDto } from '../dto/sign-in.response.dto';
+import { SingInRequestDto } from '../dto/sign-in.request.dto';
+import { UserPayloadDto } from '../dto/user-payload.dto';
+import { AuthGuard } from '../guard/auth.guard';
+import { PermissionHandler } from '../../permission/decorator/permission.decorator';
+import { UserPermission } from '../../permission/const/permission.enum';
 
-@Controller('auth')
-export class AuthController {
+@Controller('v1/auth')
+export class AuthControllerV1 {
   constructor(private readonly authService: AuthService) {}
 
   @ApiResponse({
@@ -38,11 +38,11 @@ export class AuthController {
     type: UserPayloadDto,
     status: HttpStatus.OK,
   })
-  getProfile(@Request() req): UserPayloadDto {
+  async getProfile(@Request() req): Promise<UserPayloadDto> {
     return new UserPayloadDto({
-      id: req.user.id,
+      uuid: req.user.uuid,
       username: req.user.username,
-      role: req.user.role,
+      role: req.user.role.code,
     });
   }
 

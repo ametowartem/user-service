@@ -6,8 +6,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { PermissionEntity } from '../permission/permission.entity';
-import { UserEntity } from '../user/user.entity';
+import { PermissionEntity } from '../../permission/entity/permission.entity';
+import { UserEntity } from '../../user/entity/user.entity';
 
 @Entity('roles')
 export class RoleEntity {

@@ -1,9 +1,9 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
 import * as process from 'process';
-import { UserEntity } from './user/user.entity';
-import { RoleEntity } from './role/role.entity';
-import { PermissionEntity } from './permission/permission.entity';
+import { UserEntity } from './user/entity/user.entity';
+import { RoleEntity } from './role/entity/role.entity';
+import { PermissionEntity } from './permission/entity/permission.entity';
 
 dotenv.config();
 

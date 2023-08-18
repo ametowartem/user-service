@@ -5,13 +5,13 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UserPermission } from '../permission/permission.enum';
-import { PERMISSIONS_KEY } from '../permission/permission.decorator';
-import { PayloadInterface } from './payload.interface';
-import { ConfigService } from '../core/service/configService';
-import { AuthService } from './auth.service';
+import { UserPermission } from '../../permission/const/permission.enum';
+import { PERMISSIONS_KEY } from '../../permission/decorator/permission.decorator';
+import { PayloadInterface } from '../interface/payload.interface';
+import { ConfigService } from '../../core/service/configService';
+import { AuthService } from '../service/auth.service';
 import { JwtService } from '@nestjs/jwt';
-import { PermissionService } from '../permission/permission.service';
+import { PermissionService } from '../../permission/service/permission.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -57,8 +57,8 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    const hasPermission = this.permissionService.checkRolesPernission(
-      request.user.role,
+    const hasPermission = this.permissionService.checkRolesPermission(
+      request.user.role.code,
       requiredPermissions,
     );
 

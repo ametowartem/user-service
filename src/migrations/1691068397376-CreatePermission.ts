@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import { UserPermission } from '../permission/permission.enum';
-import { UserRole } from '../role/role.enum';
+import { UserPermission } from '../permission/const/permission.enum';
+import { UserRole } from '../role/const/role.enum';
 
 const newPermissions = [
   {

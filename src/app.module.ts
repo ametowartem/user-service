@@ -2,19 +2,22 @@ import { Module } from '@nestjs/common';
 import { CoreModule } from './core/core.module';
 import { ConfigService } from './core/service/configService';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from './user/user.entity';
-import { RoleEntity } from './role/role.entity';
-import { PermissionEntity } from './permission/permission.entity';
+import { UserEntity } from './user/entity/user.entity';
+import { RoleEntity } from './role/entity/role.entity';
+import { PermissionEntity } from './permission/entity/permission.entity';
 import { RoleModule } from './role/role.module';
-import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { LoggerModule } from './logger/logger.module';
+import { UserHttpModule } from './user/user-http.module';
+import { LoggerEntity } from './logger/entity/logger.entity';
 
 @Module({
   imports: [
     CoreModule,
     RoleModule,
-    UserModule,
+    UserHttpModule,
     AuthModule,
+    LoggerModule,
     TypeOrmModule.forRootAsync({
       imports: [CoreModule],
       useFactory: (configService: ConfigService) => ({
@@ -24,8 +27,9 @@ import { AuthModule } from './auth/auth.module';
         username: configService.databaseUsername,
         password: configService.databasePassword,
         database: configService.databaseName,
-        entities: [UserEntity, RoleEntity, PermissionEntity],
+        entities: [UserEntity, RoleEntity, PermissionEntity, LoggerEntity],
         migrations: ['src/migrations'],
+        logging: true,
       }),
       inject: [ConfigService],
     }),

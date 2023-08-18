@@ -5,10 +5,11 @@ export class CreateLogging1691412911551 implements MigrationInterface {
     await queryRunner.query(
       `CREATE TABLE logger
        (
-           uuid uuid primary key,
-           author varchar(255),
-           method varchar(255),
-           username   varchar(255)
+           uuid uuid DEFAULT uuid_generate_v4() primary key,
+           author_uuid uuid not null ,
+           method varchar(255) not null ,
+           user_uuid uuid not null,
+           jsonb jsonb 
        )`,
     );
   }

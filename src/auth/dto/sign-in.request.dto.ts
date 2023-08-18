@@ -15,25 +15,4 @@ export class SingInRequestDto {
   @IsString()
   @IsNotEmpty()
   password: string;
-
-  @ApiProperty({
-    example: 'Василий',
-  })
-  @IsString()
-  @IsNotEmpty()
-  firstName: string;
-
-  @ApiProperty({
-    example: 'Иванович',
-  })
-  @IsString()
-  @IsNotEmpty()
-  patronymic: string;
-
-  @ApiProperty({
-    example: 'Даль',
-  })
-  @IsString()
-  @IsNotEmpty()
-  lastName: string;
 }

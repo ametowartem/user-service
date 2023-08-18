@@ -1,6 +1,12 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { UserStatus } from './const/user.status.enum';
-import { RoleEntity } from '../role/role.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { UserStatus } from '../const/user.status.enum';
+import { RoleEntity } from '../../role/entity/role.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -16,13 +22,13 @@ export class UserEntity {
   password: string;
   @Column({ name: 'last_name' })
   lastName: string;
+
   @Column()
   status: UserStatus;
 
-  @ManyToOne(() => RoleEntity, (role) => role.users, {
-    cascade: ['insert', 'update'],
-  })
-  role: RoleEntity;
+  @ManyToOne(() => RoleEntity, (role) => role.users)
+  @JoinColumn({ name: 'role_uuid' })
+  role?: RoleEntity;
 
   constructor(
     firstName: string,

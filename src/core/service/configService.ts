@@ -67,4 +67,8 @@ export class ConfigService {
   get saltRounds(): number {
     return Number(this.envConfig.SALT_ROUNDS);
   }
+
+  getUserTokenWhiteList(id): string {
+    return `user-access-tokens-white-list:${id}`;
+  }
 }

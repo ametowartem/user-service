@@ -8,10 +8,10 @@ export class UserRolePermisson1691056751489 implements MigrationInterface {
             first_name varchar(255) not null,
             patronymic varchar(255) not null,
             last_name varchar(255) not null,
-            username varchar(255) not null, 
+            username varchar(255) not null unique, 
             password varchar(255) not null, 
             status varchar(255) not null, 
-            role varchar(255) not null
+            role_uuid uuid not null
       )`,
     );
     await queryRunner.query(
@@ -46,7 +46,7 @@ export class UserRolePermisson1691056751489 implements MigrationInterface {
     );
     await queryRunner.query(
       `ALTER TABLE users 
-            ADD FOREIGN KEY (role) REFERENCES roles(code)`,
+            ADD FOREIGN KEY (role_uuid) REFERENCES roles(uuid)`,
     );
   }
 

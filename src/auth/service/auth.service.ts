@@ -1,13 +1,14 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserService } from '../user/user.service';
-import { ConfigService } from '../core/service/configService';
+import { UserService } from '../../user/service/user.service';
+import { ConfigService } from '../../core/service/configService';
 import { JwtService } from '@nestjs/jwt';
-import { REDIS_PROVIDER } from '../core/core.provider';
+import { REDIS_PROVIDER } from '../../core/core.provider';
 import IORedis from 'IORedis';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import { PayloadInterface } from './payload.interface';
+import { PayloadInterface } from '../interface/payload.interface';
 import * as moment from 'moment';
+import { UserStatus } from '../../user/const/user.status.enum';
 
 @Injectable()
 export class AuthService {
@@ -38,7 +39,11 @@ export class AuthService {
       role: user.role,
     };
 
-    this.redis.sadd(this.getUserTokenWhiteList(user.uuid), jti);
+    if (user.status === UserStatus.Deleted) {
+      throw new UnauthorizedException('User account was deleted');
+    }
+
+    this.redis.sadd(this.configService.getUserTokenWhiteList(user.uuid), jti);
 
     return {
       accessToken: await this.jwtService.signAsync(payload, {
@@ -47,20 +52,19 @@ export class AuthService {
     };
   }
 
-  getUserTokenWhiteList(id): string {
-    return `user-access-tokens-white-list:${id}`;
-  }
-
   async checkRedisIsMember(payload: PayloadInterface): Promise<boolean> {
     return await this.redis
-      .sismember(this.getUserTokenWhiteList(payload.uuid), payload.jti)
+      .sismember(
+        this.configService.getUserTokenWhiteList(payload.uuid),
+        payload.jti,
+      )
       .then((value) => {
         return value !== 0;
       });
   }
   async logout(payload: PayloadInterface) {
     await this.redis.srem(
-      this.getUserTokenWhiteList(payload.uuid),
+      this.configService.getUserTokenWhiteList(payload.uuid),
       payload.jti,
     );
   }

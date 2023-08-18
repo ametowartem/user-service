@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { RoleRepository } from './role.repository';
-import { RoleEntity } from './role.entity';
+import { RoleRepository } from '../role.repository';
+import { RoleEntity } from '../entity/role.entity';
 
 @Injectable()
 export class RoleService {
@@ -8,5 +8,8 @@ export class RoleService {
 
   async getRoleByCode(code: string): Promise<RoleEntity> {
     return this.roleRepository.getRoleByCode(code);
+  }
+  async getRoleByUuid(uuid: string): Promise<RoleEntity> {
+    return this.roleRepository.getRoleByUuid(uuid);
   }
 }

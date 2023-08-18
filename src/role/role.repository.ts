@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { RoleEntity } from './role.entity';
+import { RoleEntity } from './entity/role.entity';
 
 @Injectable()
 export class RoleRepository extends Repository<RoleEntity> {
@@ -15,9 +15,9 @@ export class RoleRepository extends Repository<RoleEntity> {
   }
 
   async getRoleByCode(code: string): Promise<RoleEntity> {
-    return await this.createQueryBuilder('roles')
-      .where({ code })
-      .leftJoinAndSelect('roles.permissions', 'permissions')
-      .getOne();
+    return await this.createQueryBuilder('roles').where({ code }).getOne();
+  }
+  async getRoleByUuid(uuid: string): Promise<RoleEntity> {
+    return await this.createQueryBuilder('roles').where({ uuid }).getOne();
   }
 }

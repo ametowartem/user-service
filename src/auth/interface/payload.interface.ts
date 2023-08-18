@@ -1,4 +1,4 @@
-import { RoleEntity } from '../role/role.entity';
+import { RoleEntity } from '../../role/entity/role.entity';
 
 export class PayloadInterface {
   username: string;

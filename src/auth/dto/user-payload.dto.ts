@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class UserPayloadDto {
   constructor(data: Required<UserPayloadDto>) {
@@ -16,14 +16,14 @@ export class UserPayloadDto {
   @ApiProperty({
     example: 2,
   })
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  id: number;
+  uuid: string;
 
   @ApiProperty({
     example: 'user',
   })
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
   role: string;
 }

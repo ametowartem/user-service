@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { RoleRepository } from '../role/role.repository';
-import { REDIS_PROVIDER } from '../core/core.provider';
+import { RoleRepository } from '../../role/role.repository';
+import { REDIS_PROVIDER } from '../../core/core.provider';
 import IORedis from 'IORedis';
-import { ConfigService } from '../core/service/configService';
-import { UserPermission } from './permission.enum';
+import { ConfigService } from '../../core/service/configService';
+import { UserPermission } from '../const/permission.enum';
 
 @Injectable()
 export class PermissionService {
@@ -17,7 +17,7 @@ export class PermissionService {
     private readonly configService: ConfigService,
   ) {}
 
-  async checkRolesPernission(
+  async checkRolesPermission(
     roleCode: string,
     permissionCode: UserPermission[],
   ) {
@@ -28,6 +28,10 @@ export class PermissionService {
       rolesPermissions = JSON.parse(rolesPermissionsRaw);
     } else {
       rolesPermissions = await this.refreshRolesPermissions();
+    }
+
+    if (!permissionCode) {
+      return true;
     }
 
     permissionCode.forEach((el) => {
